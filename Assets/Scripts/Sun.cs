@@ -17,11 +17,11 @@ public class Sun : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (DayTime >= 0.375 && DayTime <= 0.875)
+        if (DayTime <= 0.5)
         {
             foreach (GameObject i in LightObjects)
             {
-                Lights = i.GetComponentsInChildren<Light>(true);
+                Lights = i.GetComponentsInChildren<Light>();
                 foreach (Light j in Lights)
                 {
                     if (j != null)
@@ -37,32 +37,25 @@ public class Sun : MonoBehaviour
     void Update()
     {
         DayTime += Time.deltaTime / TimeOfCycle;
-        if (DayTime >= 1) DayTime -= 1;
-        if (DayTime >= 0.875f)
+        if (DayTime >= 1)
         {
-            foreach (GameObject i in LightObjects)
-            {
-                Lights = i.GetComponentsInChildren<Light>(true);
-                foreach (Light j in Lights)
-                {
-                    if (j != null)
-                    {
-                        j.enabled = true;
-                    }
-                }
-            }
-
+            DayTime -= 1;
         }
-        else
+
+        foreach (GameObject i in LightObjects)
         {
-            foreach (GameObject i in LightObjects)
+            Lights = i.GetComponentsInChildren<Light>();
+            foreach (Light j in Lights)
             {
-                Lights = i.GetComponentsInChildren<Light>(true);
-                foreach (Light j in Lights)
+                if (j != null)
                 {
-                    if (j != null)
+                    if (DayTime <= 0.5)
                     {
                         j.enabled = false;
+                    }
+                    else
+                    {
+                        j.enabled = true;
                     }
                 }
             }
